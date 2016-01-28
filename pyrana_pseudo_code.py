@@ -68,17 +68,33 @@ JobList (list of jobs)
                        Iteration
                            Correlation;
 
-Pass = Pair[k].Pass[n];
+# The structures might be organized like this
+# This looks like a lot to pass around, but
+# we won't have to actually pass all this around
+# because methods are concise.
+JobList[L].SnapShot[S].Camera[C].Pair[k].Pass[n].Iteration[i];
+
+# Count the number of jobs
+NumJobs = len(JobList);
+
+# Execute all the jobs.
+for J = 1 : NumJobs:
+   JobList[L].Execute();
+   
+# Number of snapshots:
+for S = 1 : len(SnapShot):
+    SnapShot[S].Execute();
+
+# etc etc. The complicated stuff only
+# begins at the "Pass" level.
 
 # I think the call will be something like
 # Pass.Method = "Deform";
 # Pass.Execute();
 
-
 # Below is some pseudo-code
 # for how I envision a single
 # iterative Pass being procesed.
-
 
 # Initialize the "stop iterations" flag
 stop_iterations = False;
@@ -102,8 +118,8 @@ while stop_iterations is False:
     # number of iterations
     if Pass.NumIterations >= Pass.MaxIterations:
         # This will cause the loop to end
-        # after the next iteration.
-        # But it won't escape the while loop.
+        # after the next iteration. But it 
+        # won't escape the current iteration.
         stop_iterations = True;
         
     # Grid the image
